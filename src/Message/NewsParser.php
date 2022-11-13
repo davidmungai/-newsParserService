@@ -17,8 +17,7 @@ final class NewsParser
         return $this->load;
     }
 
-    public function __construct(object $load)
+    public function __construct()
     {
-        $this->load = $load;
     }
 }

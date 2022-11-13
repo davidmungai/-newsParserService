@@ -6,27 +6,37 @@ use App\Repository\NewsRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: NewsRepository::class)]
+/**
+ * @ORM\Entity
+ * @ORM\Table(name="news ")
+ */
 class News
 {
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
+    /**
+     * @ORM\Id
+     * @ORM\Column(type="integer")
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
+    /**
+     * @ORM\Column(type="string")
+     */
     private ?string $title = null;
 
-    #[ORM\Column(type: Types::TEXT, length: 2553232)]
+    /**
+     * @ORM\Column(type="string")
+     */
     private ?string $short_description = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
+    /**
+     * @ORM\Column(type="string")
+     */
     private ?string $picture = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+
     private ?\DateTimeInterface $date_added = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $date_updated = null;
 
     public function getId(): ?int

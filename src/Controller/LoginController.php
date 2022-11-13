@@ -17,4 +17,4 @@ class LoginController  extends AbstractController
         return $this->render('auth/login.html.twig');
 
     }
-}
+} 

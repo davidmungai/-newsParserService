@@ -3,6 +3,6 @@ index:
   controller: App\Controller\LoginController::index
 
 news:
-  resource: "Controller/NewsController.php"
+  resource:  App\Controller\LoginController
   prefix: /news
   type: annotation
