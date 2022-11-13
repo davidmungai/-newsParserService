@@ -9,16 +9,12 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class LoginController  extends AbstractController
 {
     /**
-     * @Route("/", name="index")
+     * @Route("/")
      */
-    public function number(): Response
+    public function index(): Response
     {
-     $error='';
      
-        return $this->render('auth/login.html.twig',[
-            'error'=>$error
-
-        ]);
+        return $this->render('auth/login.html.twig');
 
     }
 }

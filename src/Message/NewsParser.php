@@ -4,20 +4,21 @@ namespace App\Message;
 
 final class NewsParser
 {
-    /*
-     * Add whatever properties and methods you need
-     * to hold the data for this message class.
+   /**
+     * @var object
      */
+    private $load;
 
-//     private $name;
+    /**
+     * @return object
+     */
+    public function getLoad(): object
+    {
+        return $this->load;
+    }
 
-//     public function __construct(string $name)
-//     {
-//         $this->name = $name;
-//     }
-
-//    public function getName(): string
-//    {
-//        return $this->name;
-//    }
+    public function __construct(object $load)
+    {
+        $this->load = $load;
+    }
 }

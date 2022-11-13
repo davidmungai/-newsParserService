@@ -18,10 +18,8 @@
         {% endblock %}
     </head>
     <body>
-    <div class="container">
-        <div class="card">
-            <h2>TEST: david</h2>
-        </div>
+    <div> 
+        {{ include('inc/navbar.html.twig') }}
         {% block body %}{% endblock %}
     </div>
     </body>

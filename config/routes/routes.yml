@@ -1,4 +1,8 @@
-newsParserService:
-  resource: "Controller/LoginController.php"
-  prefix: /
+index:
+  path: /
+  controller: App\Controller\LoginController::index
+
+news:
+  resource: "Controller/NewsController.php"
+  prefix: /news
   type: annotation
