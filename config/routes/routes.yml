@@ -1,0 +1,4 @@
+newsParserService:
+  resource: "Controller/LoginController.php"
+  prefix: /
+  type: annotation
