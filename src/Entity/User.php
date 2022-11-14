@@ -7,32 +7,35 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+
 /**
-* @ORM\Entity
-* @ORM\Table(name="user")
-*/
+ * @ORM\Entity(repositoryClass=UserRepository::class)
+ * @UniqueEntity(fields={"email"}, message="There is already an account with this email")
+ */
 class User implements UserInterface, PasswordAuthenticatedUserInterface
-{   /**
-    * @ORM\Id
-    * @ORM\Column(type="integer")
-    * @ORM\GeneratedValue(strategy="AUTO")
-    */
-    private ?int $id = null;
-   
+{
     /**
-    * @ORM\Column(type="string")
-    */
-    private ?string $email = null;
-    
-    /**
-    * @ORM\Column(type="json")
-    */
-    private array $roles = [];
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="integer")
+     */
+    private $id;
 
     /**
-    * @ORM\Column(type="string")
-    */
-    private ?string $password = null;
+     * @ORM\Column(type="string", length=180, unique=true)
+     */
+    private $email;
+
+    /**
+     * @ORM\Column(type="json")
+     */
+    private $roles = [];
+
+    /**
+     * @var string The hashed password
+     * @ORM\Column(type="string")
+     */
+    private $password;
 
     public function getId(): ?int
     {
@@ -75,10 +78,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getRoles(): array
     {
         $roles = $this->roles;
-        // guarantee every user at least has MODERATOR
-        $roles[] = 'ROLE_MODERATOR';
+        // guarantee every user at least has ROLE_USER
 
-        return array_unique($roles);
+        return ['ROLE_USER'];
     }
 
     public function setRoles(array $roles): self

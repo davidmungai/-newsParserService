@@ -7,61 +7,63 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use Omines\DataTablesBundle\DataTableFactory;
-use Symfony\Component\Messenger\Message;
 use App\Message\NewsParser;
-use Symfony\Component\Messenger\MessageBusInterface;
+use Doctrine\Persistence\ManagerRegistry;
+use Psr\Log\LoggerInterface;
+use Doctrine\ORM\Tools\Pagination\Paginator;
+use Doctrine\ORM\Query;
+
+
 
 
 class NewsController extends AbstractController
 {
+     public $em;
+     public $logger;
+
+    public function __construct(LoggerInterface $logger,ManagerRegistry $doctrine)
+    {
+        $this->em= $doctrine->getManager();
+        $this->logger=$logger;
+    }
       /**
-     * @Route("/news")
+     * @Route("/news/{page<\d+>?1}",name="news")
      */
-
-
-    public function index(Request $request, MessageBusInterface $bus): Response
+    public function index(int $page): Response
     {
-        $article=new NewsParser();
-        $bus->dispatch(new NewsParser("article"));
+        $news=[];
 
-//        $query = $this->em->getRepository(News::class)
-//            ->createQueryBuilder('u')
-//            ->getQuery();
-//
-//        $paginator = new Paginator($query);
-//
-//        $pageSize = 5;
-//
-//        $totalItems = count($paginator);
-//
-//        $pageCount = ceil($totalItems/$pageSize);
-//        $news = $paginator
-//            ->getQuery()
-//            ->setFirstResult($pageSize * ($request->page-1))
-//            ->setMaxResults($pageSize)
-//            ->getResult(Query::HYDRATE_OBJECT);
-//
-//        return $this->render('news.html.twig', [
-//            'news'=>$news,
-//            'pageCount'=>$pageCount,
-//            'nextPage'=>($pageCount > $page)? "/news/" . ($page + 1): "#",
-//            "lastPage"=>($page == 1)?"#":"/news/" . ($page - 1)
-//        ]);
+       $query = $this->em->getRepository(News::class)
+           ->createQueryBuilder('u')
+           ->getQuery();
 
-        return $this->render('news/index.html.twig');
+       $paginator = new Paginator($query);
+
+       $pageSize = 10;
+
+       $totalItems = count($paginator);
+
+        $pageCount = ceil($totalItems/$pageSize);
+       $news = $paginator
+           ->getQuery()
+           ->setFirstResult($pageSize * ($page-1))
+           ->setMaxResults($pageSize)
+           ->getResult(Query::HYDRATE_OBJECT);
+
+
+         return $this->render('news/index.html.twig',[
+           'news'=>$news,
+           'pageCount'=>$pageCount,
+           'nextPage'=>($pageCount > $page)? "/news/" . ($page + 1): "#",
+           "lastPage"=>($page == 1)?"#":"/news/" . ($page - 1)
+       ]);
 
     }
-    /**
-     * @Route("/news/post")
+  
+     /**
+     *@Route("/news/delete/{id}", name="delete")
      */
-       public function show($page): \Symfony\Component\HttpFoundation\Response
-    {
-
-    }
-
-
-      public function delete($id, Request $request)
+    public function delete(int $id, Request $request)
     {
         $query = $this->em->getRepository(News::class)->find($id);
         $this->em->remove($query);
