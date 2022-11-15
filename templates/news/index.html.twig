@@ -20,7 +20,7 @@
                 <th>Picture</th>
                 <th>Date Added</th>
                 <th>Date Updated</th>
-                {% if (app.user.roles.0) != 'ROLE_MODERATOR' %}
+                {% if is_granted('ROLE_ADMIN') %}
                 <th>Action</th>
                 {% endif %}
             </tr>
@@ -33,7 +33,7 @@
                     <td><img src="{{ new.picture }}" width=120 hieght=150 alt="new story image"></td>
                     <td>{{ new.dateAdded|date("m/d/Y") }}</td>
                     <td>{{ new.dateUpdated|date("m/d/Y") }}</td>
-                    {% if (app.user.roles.0) != 'ROLE_MODERATOR' %}
+                    {% if is_granted('ROLE_ADMIN') %}
                         <td><a href="/news/delete/{{ new.id }}"> DELETE</a></td>
                     {% endif %}
                 </tr>
