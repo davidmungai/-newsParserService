@@ -46,7 +46,13 @@ docker-compose up -d
     - user: moderator@test.com  
       password: 12345678
 
+
+
+
 ![Alt text](/docs/landing.png?raw=true "News Landing Page")
+
+
+
 
 ## Contributing
 
